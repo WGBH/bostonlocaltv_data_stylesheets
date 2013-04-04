@@ -41,16 +41,16 @@
                 <!--</pbcoreAssetType>-->
             </xsl:if>
 
+<!-- 
             <xsl:if test="fmp:date_first_play_calc/text() != ''">
                 <xsl:element name="pbcoreAssetDate">
-                    <!--<pbcoreAssetDate dateType="created">-->
                     <xsl:attribute name="dateType">
                         <xsl:text>broadcast</xsl:text>
                     </xsl:attribute>
                     <xsl:value-of select="fmp:date_first_play_calc/text()"/>
                 </xsl:element>
-                <!--</pbcoreAssetDate>-->
             </xsl:if>
+ -->
 
             <xsl:if test="fmp:d_FirstPlay/text() != ''">
                 <xsl:element name="pbcoreAssetDate">
@@ -289,12 +289,12 @@
 
                 <!--<instantiationAlternativeModes>-->
                 <xsl:if
-                    test="concat(fmp:program_language/fmp:DATA[2]/text(),fmp:program_language/fmp:DATA[3]/text()) != ''">
+                    test="concat(fmp:tx_Language/fmp:DATA[2]/text(),fmp:tx_Language/fmp:DATA[3]/text()) != ''">
                     <xsl:element name="instantiationAlternativeModes">
-                        <xsl:value-of select="fmp:program_language/fmp:DATA[2]/text()"/>
-                        <xsl:if test="fmp:program_language/fmp:DATA[3]/text() != ''">
+                        <xsl:value-of select="fmp:tx_Language/fmp:DATA[2]/text()"/>
+                        <xsl:if test="fmp:tx_Language/fmp:DATA[3]/text() != ''">
                             <xsl:value-of
-                                select="concat(', ',fmp:program_language/fmp:DATA[3]/text())"/>
+                                select="concat(', ',fmp:tx_Language/fmp:DATA[3]/text())"/>
                         </xsl:if>
                     </xsl:element>
 
