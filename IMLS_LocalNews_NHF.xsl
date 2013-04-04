@@ -9,12 +9,12 @@
     <xsl:variable name="rowCount" select="count(/fmp:FMPDSORESULT/fmp:ROW)"/>
     
     
-<!--     NOTE:  this was written for use with WCVB Assignment Sheets data in Filemaker database "IMLS_LocalNews_NHF" on MLA hosted server (available through launcher) -->
+<!--     NOTE:  this was written for use with WCVB Assignment Sheets data in Filemaker database "IMLS_LocalNews_NHF" on hosted server (available through launcher) -->
 
     <xsl:template match="/fmp:FMPDSORESULT">
         <xsl:choose>
             <xsl:when test="$rowCount > 1">
-                <xsl:element name="PBCoreCollection">
+                <xsl:element name="pbcoreCollection">
                     <xsl:apply-templates select="fmp:ROW"/>
                 </xsl:element>
             </xsl:when>
@@ -28,7 +28,7 @@
 
 
     <xsl:template match="fmp:ROW">
-        <xsl:element name="PBCoreDescriptionDocument">
+        <xsl:element name="pbcoreDescriptionDocument">
             <!--<PBCoreDescriptionDocument>-->
 
             <!--<pbcoreAssetType source="source1" ref="ref1" version="version1" annotation="annotation1">pbcoreAssetType0-->

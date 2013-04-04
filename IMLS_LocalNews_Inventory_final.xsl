@@ -14,7 +14,7 @@
     <xsl:template match="/fmp:FMPDSORESULT">
         <xsl:choose>
             <xsl:when test="$rowCount > 1">
-                <xsl:element name="PBCoreCollection">
+                <xsl:element name="pbcoreCollection">
                     <xsl:apply-templates select="fmp:ROW"/>
                 </xsl:element>
             </xsl:when>
@@ -28,7 +28,7 @@
 
 
     <xsl:template match="fmp:ROW">
-        <xsl:element name="PBCoreDescriptionDocument">
+        <xsl:element name="pbcoreDescriptionDocument">
             <!--<PBCoreDescriptionDocument>-->
 
 
