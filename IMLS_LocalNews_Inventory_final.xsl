@@ -48,18 +48,13 @@
             <xsl:if test="fmp:UID/text() != ''">
             <xsl:element name="pbcoreIdentifier">
                 <xsl:attribute name="source">
-                    <xsl:text>Accession #</xsl:text>
+                    <xsl:text>UID</xsl:text>
                 </xsl:attribute>
                 <xsl:value-of select="fmp:UID/text()"/>
             </xsl:element>
             </xsl:if>
             
-            <xsl:if test="fmp:Assignment_Sheet_ID/text() != ''">
-            <xsl:element name="pbcoreIdentifier">
-                <!--<pbcoreIdentifier source="UID">-->
-                <xsl:value-of select="fmp:Assignment_Sheet_ID/text()"/>
-            </xsl:element>
-            </xsl:if>
+
             <!--</pbcoreIdentifier>-->
 
 
