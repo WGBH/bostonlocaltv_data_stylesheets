@@ -196,7 +196,7 @@
                             <xsl:variable name="multiIDString">
                                 <xsl:choose>
                                     <xsl:when
-                                        test="../../fmp:UID/text() = '' or ../../fmp:CAN_CAN/text() = ''">
+                                        test="../../fmp:UID/text() = '' or ../../fmp:CAN_NUMBER/text() = ''">
                                         <xsl:text/>
                                     </xsl:when>
                                     <xsl:otherwise>
