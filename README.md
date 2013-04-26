@@ -13,4 +13,4 @@ This work was done amidst a maelstrom of "where's the data?" chaos, e.g.
 
 Ergo, it's easily possible to produce the wrong data or version of it without referring to an authority list of some kind.  
 
-See the [Collection Details](collection_details.html) page for more details.
+See the [Collection Details](http://htmlpreview.github.io/?https://github.com/WGBH/bostonlocaltv_data_stylesheets/blob/master/collection_details.html) page for more details.
