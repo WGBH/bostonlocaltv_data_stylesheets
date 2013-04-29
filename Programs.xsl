@@ -7,11 +7,11 @@
     exclude-result-prefixes="fmp xsi">
     <xsl:output indent="yes" method="xml"/>
     <xsl:variable name="rowCount" select="count(/fmp:FMPDSORESULT/fmp:ROW)"/>
-    
-    
-<!--     NOTE:  this was written for use with CCTV data in Filemaker database "Programs.fp7" in CCTV folder on dept server in IMLS_News -->
-    
-    
+
+
+    <!--     NOTE:  this was written for use with CCTV data in Filemaker database "Programs.fp7" in CCTV folder on dept server in IMLS_News -->
+
+
 
     <xsl:template match="/fmp:FMPDSORESULT">
         <xsl:choose>
@@ -41,7 +41,7 @@
                 <!--</pbcoreAssetType>-->
             </xsl:if>
 
-<!-- 
+            <!-- 
             <xsl:if test="fmp:date_first_play_calc/text() != ''">
                 <xsl:element name="pbcoreAssetDate">
                     <xsl:attribute name="dateType">
@@ -63,7 +63,7 @@
                 </xsl:element>
                 <!--</pbcoreAssetDate>-->
             </xsl:if>
-            
+
             <xsl:if test="fmp:d_CreationDate/text() != ''">
                 <xsl:element name="pbcoreAssetDate">
                     <!--<pbcoreAssetDate dateType="created">-->
@@ -75,7 +75,7 @@
                 </xsl:element>
                 <!--</pbcoreAssetDate>-->
             </xsl:if>
-            
+
             <xsl:if test="fmp:d_ExportedtoTiltrac/text() != ''">
                 <xsl:element name="pbcoreAssetDate">
                     <!--<pbcoreAssetDate dateType="created">-->
@@ -115,24 +115,28 @@
             <!--</pbcoreTitle>-->
 
             <!-- MULTIPLES -->
-            <xsl:if test="fmp:SUBJECT_PERSONALITIES/text() != ''">
-                <xsl:element name="pbcoreSubject">
-                    <!--<pbcoreSubject>-->
-                    <xsl:attribute name="subjectType">
-                        <xsl:text>entity</xsl:text>
-                    </xsl:attribute>
-                    <xsl:value-of select="fmp:SUBJECT_PERSONALITIES/text()"/>
-                </xsl:element>
+            <xsl:if test="fmp:SUBJECT_PERSONALITIES/fmp:DATA/text() != ''">
+                <xsl:for-each select="fmp:SUBJECT_PERSONALITIES/fmp:DATA[text() != '']">
+                    <xsl:element name="pbcoreSubject">
+                        <!--<pbcoreSubject>-->
+                        <xsl:attribute name="subjectType">
+                            <xsl:text>entity</xsl:text>
+                        </xsl:attribute>
+                        <xsl:value-of select="text()"/>
+                    </xsl:element>
+                </xsl:for-each>
                 <!--</pbcoreSubject>-->
             </xsl:if>
-            <xsl:if test="fmp:SUBJECT/text() != ''">
-                <xsl:element name="pbcoreSubject">
-                    <!--<pbcoreSubject subjectType="entity">-->
-                    <xsl:attribute name="subjectType">
-                        <xsl:text>entity</xsl:text>
-                    </xsl:attribute>
-                    <xsl:value-of select="fmp:SUBJECT/text()"/>
-                </xsl:element>
+            <xsl:if test="fmp:SUBJECT/fmp:DATA/text() != ''">
+                <xsl:for-each select="fmp:SUBJECT/fmp:DATA[text() != '']">
+                    <xsl:element name="pbcoreSubject">
+                        <!--<pbcoreSubject subjectType="entity">-->
+                        <xsl:attribute name="subjectType">
+                            <xsl:text>entity</xsl:text>
+                        </xsl:attribute>
+                        <xsl:value-of select="text()"/>
+                    </xsl:element>
+                </xsl:for-each>
                 <!--</pbcoreSubject>-->
             </xsl:if>
 
@@ -182,17 +186,19 @@
 
 
 
-            <xsl:if test="fmp:LOCATION/text() != ''">
+            <xsl:if test="fmp:LOCATION/fmp:DATA/text() != ''">
                 <!--fmp:program_locations/text() != ''">-->
-                <xsl:element name="pbcoreCoverage">
-                    <xsl:element name="coverage">
-                        <!--<xsl:value-of select="fmp:program_locations/text()"/>-->
-                        <xsl:value-of select="fmp:LOCATION/text()"/>
+                <xsl:for-each select="fmp:LOCATION/fmp:DATA">
+                    <xsl:element name="pbcoreCoverage">
+                        <xsl:element name="coverage">
+                            <!--<xsl:value-of select="fmp:program_locations/text()"/>-->
+                            <xsl:value-of select="text()"/>
+                        </xsl:element>
+                        <xsl:element name="coverageType">
+                            <xsl:text>spatial</xsl:text>
+                        </xsl:element>
                     </xsl:element>
-                    <xsl:element name="coverageType">
-                        <xsl:text>spatial</xsl:text>
-                    </xsl:element>
-                </xsl:element>
+                </xsl:for-each>
             </xsl:if>
 
             <xsl:if test="fmp:tx_Organizations/text() != ''">
@@ -208,22 +214,26 @@
 
 
 
-            <xsl:if
-                test="fmp:CONTRIBUTOR/text() != '' and translate(fmp:CONTRIBUTOR_ROLE/text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ ,.:!?','abcdefghijklmnopqrstuvwxyz') != 'unknown'">
+            <xsl:if test="fmp:CONTRIBUTOR/fmp:DATA/text() != ''">
                 <!--translate(fmp:program_talent/text(),' ','') != ''">-->
                 <!--removes all whitespace for test-->
-                <xsl:element name="pbcoreContributor">
-                    <!--<pbcoreContributor>-->
-                    <xsl:value-of select="fmp:CONTRIBUTOR/text()"/>
-                </xsl:element>
-                <!--</pbcoreContributor>-->
-                <xsl:element name="contributorRole">
-                    <xsl:if
-                        test="translate(fmp:CONTRIBUTOR_ROLE/text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ ,.:!?','abcdefghijklmnopqrstuvwxyz') != 'unknown'">
-                        <xsl:value-of select="fmp:CONTRIBUTOR_ROLE/text()"/>
-                    </xsl:if>
+                <xsl:for-each select="fmp:CONTRIBUTOR/fmp:DATA">
+                    <xsl:if test="text() != ''">
+                        <xsl:element name="pbcoreContributor">
+                            <!--<pbcoreContributor>-->
+                            <xsl:value-of select="text()"/>
+                        </xsl:element>
+                        <!--</pbcoreContributor>-->
+                        <xsl:element name="contributorRole">
+                            <xsl:if
+                                test="translate(fmp:CONTRIBUTOR_ROLE/fmp:DATA[position()]/text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ ,.:!?','abcdefghijklmnopqrstuvwxyz') != 'unknown'">
+                                <xsl:value-of
+                                    select="fmp:CONTRIBUTOR_ROLE/fmp:DATA[position()]/text()"/>
+                            </xsl:if>
 
-                </xsl:element>
+                        </xsl:element>
+                    </xsl:if>
+                </xsl:for-each>
             </xsl:if>
 
 
@@ -293,8 +303,7 @@
                     <xsl:element name="instantiationAlternativeModes">
                         <xsl:value-of select="fmp:tx_Language/fmp:DATA[2]/text()"/>
                         <xsl:if test="fmp:tx_Language/fmp:DATA[3]/text() != ''">
-                            <xsl:value-of
-                                select="concat(', ',fmp:tx_Language/fmp:DATA[3]/text())"/>
+                            <xsl:value-of select="concat(', ',fmp:tx_Language/fmp:DATA[3]/text())"/>
                         </xsl:if>
                     </xsl:element>
 
