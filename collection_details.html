@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<style>
+
+body {
+  /* from github. */
+  font: 13px Helvetica, arial, freesans, clean, sans-serif;
+}
+
+a {
+  color: #4183c4;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+th.xs  { width: 10px; }
+th.sm   { width: 50px; }
+th.med  { width: 200px; }
+th.lg  { width: 500px; }
+th.xl  { width: 1000px; }
+
+.collection-details {
+  border: solid black 1px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.collection-details thead {
+  background: #333;
+  color: #fff;
+}
+
+.collection-details tr td {
+  padding: 2px 5px;
+  vertical-align: top;
+  border: solid black 1px;
+}
+
+.output-file-details {
+  margin: 0;
+}
+
+.output-file-details li {
+  float:left;
+  list-style: none;
+}
+
+.output-file-details li.output-file-name {
+  clear: left;
+  font-weight: bold;
+  list-style-type: circle;
+}
+
+code {
+  background: #eee;
+  border: #ccc dotted 1px;
+  padding: 0 4px;
+}
+
+</style>
+</head>
+<body>
+
+<h2>Collection Details</h2>
+
+<p>Edit this table by following the <a href="#edit-instructions">instructions below</a> when adding collections or new output files. Until we get a more coherent system of tests and conventions in place, this will be the main place to document which files mean what.</p>
+
+<table class="collection-details">
+  <thead>
+    <!-- top headers row -->
+    <tr>
+      <th class="med">Collection Name</th>
+      <th class="lg">Source Database</th>
+      <th class="med">XSL Stylesheet</th>
+      <th class="lg" colspan=2>Saved Output File</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <!-- CCTV -->
+    <tr class="collection-detail">
+      <td>CCTV</td>
+      <td>CCTV "Programs.fp7" on DEPTFS /Volumes/MLA/IMLS_News/CCTV</td>
+      <td>Programs.xsl</td>
+      <td>
+        <ul class="output-file-details">
+          <li class="output-file-name"><a href="output/cctv.pbcore.2013-04-04.xml">output/cctv.pbcore.2013-04-04.xml</a></li>
+          <li class="output-file-desc">Subset of CCTV Collection data in pbcore2 for ingest into bostonlocaltv</li>
+        </ul>
+      </td>
+    </tr>
+    
+    <!-- WCVB Inventory -->
+    <tr class="collection-detail">
+      <td>WCVB Collection</td>
+      <td>WCVB inventory database was "IMLS_LocalNews_Inventory_final20130211.fp7" on DEPTFS</td>
+      <td>IMLS_LocalNews_Inventory_final.xsl</td>
+      <td>
+        <ul class="output-file-details">
+          <li class="output-file-name"><a href="output/wcvb.pbcore.2013-04-09.xml">output/wcvb.pbcore.2013-04-09.xml</a></li>
+          <li class="output-file-desc">Subset of WCVB Collection data in pbcore2 for ingest into bostonlocaltv</li>
+
+          <li class="output-file-name"><a href="output/wcvb.pbcore.ALL_RECORDS.xml">output/wcvb.pbcore.ALL_RECORDS.xml</a></li>
+          <li class="output-file-desc">All records for WCVB Collection data in pbcore2 for ingest into bostonlocaltv</li>
+        </ul>
+      </td>
+    </tr>
+    
+    <!-- WCVB Assignment Sheets -->
+    <tr class="collection-detail">
+      <td>WCVB Collection</td>
+      <td>WCVB assignments database for assignments was "IMLS_LocalNews_NHF.fp7" on FMP host</td>
+      <td>IMLS_LocalNews_NHF.xsl</td>
+      <td>
+        <ul class="output-file-details">
+          <li class="output-file-name"> does not exist</li>
+          <li class="output-file-desc">We are not showing assignment sheets on the website yet</li>
+        </ul>
+      </td>
+    </tr>
+
+    <!-- WHDH -->
+    <tr class="collection-detail">
+      <td>WHDH</td>
+      <td>WHDH database was IMLS_LocalNews_BPL.fp7 on FMP host</td>
+      <td>IMLS_LocalNews_BPL.xsl</td>
+      <td>
+        <ul class="output-file-details">
+          <li class="output-file-name"><a href="output/whdh.pbcore.2013-04-08.xml">output/whdh.pbcore.2013-04-08.xml</a></li>
+          <li class="output-file-desc">Subset of WHDH Collection data in pbcore2 for ingest into bostonlocaltv</li>
+        </ul>
+      </td>
+    </tr>
+    
+    <!-- WGBH -->
+    <tr class="collection-detail">
+      <td>Ten O'Clock News</td>
+      <td>WGBH database was IMLS_LocalNews_WGBH.fp7 on FMP host</td>
+      <td>IMLS_LocalNews_WGBH.xsl</td>
+      <td>
+        <ul class="output-file-details">
+          <li class="output-file-name"><a href="output/wgbh.pbcore.2013-04-08.xml">output/wgbh.pbcore.2013-04-08.xml</a></li>
+          <li class="output-file-desc">Subset of Ten O'Clock News Collection data in pbcore2 for ingest into bostonlocaltv</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<p>
+  <h2 id="edit-instructions">Instructions for editing the table.</h2>
+
+  <h4>Adding details for a new collection:</h4>
+  <ol>
+    <li>
+      Find an existing
+      <code>&lt;tr class=&quot;collection-details&quot;&gt;...&lt;/tr&gt;</code>
+      inside of
+      <code>&lt;table class=&quot;collection-details&quot;&gt;...&lt;/table&gt;</code>
+    </li>
+    <li>
+      Copy and paste to an appropriate place inside of
+      <code>&lt;tbody&gt;...&lt;/tbody&gt;</code>
+      (e.g. appending to the end is usually a good spot for new stuff).
+    </li>
+    <li>
+      Modify the contents accordingly, save, review, commit, push.
+    </li>
+  </ol>
+
+  <h4>Adding details for a output file for a given collection:</h4>
+  <ol>
+    <li>Find an existing
+      <code>&lt;ul class=&quot;output-file-details&quot;&gt;...&lt;/ul&gt;</code>
+      inside of a <code>&lt;tr class=&quot;collection-detail&quot;&gt;...&lt;/tr&gt;</code>
+    </li>
+    <li>
+      Copy and paste a single pair of
+      <code>&lt;li class=&quot;output-file-name&quot;&gt;...&lt;/li&gt;&lt;li class=&quot;output-file-desc&quot;&gt;...&lt;/li&gt;</code>
+      to an appropriate place inside of
+      <code>&lt;ul class=&quot;output-file-details&quot;&gt;...&lt;/ul&gt;</code>
+      (e.g. appending to the end is usually a good spot for new stuff).
+    </li>
+    <li>
+      Modify the contents accordingly, save, review, commit, push.
+    </li>
+  </ol>
+</p>
+
+
+</body>
+</html>
