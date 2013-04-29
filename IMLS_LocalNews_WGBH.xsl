@@ -7,10 +7,10 @@
     exclude-result-prefixes="fmp xsi">
     <xsl:output indent="yes" method="xml"/>
     <xsl:variable name="rowCount" select="count(/fmp:FMPDSORESULT/fmp:ROW)"/>
-    
-    
-<!--     NOTE: this was written for use with WGBH data in Filemaker database "IMLS_LocalNews_WGBH" on hosted server (available through launcher) -->
-    
+
+
+    <!--     NOTE: this was written for use with WGBH data in Filemaker database "IMLS_LocalNews_WGBH" on hosted server (available through launcher) -->
+
 
     <xsl:template match="/fmp:FMPDSORESULT">
         <xsl:choose>
@@ -156,17 +156,21 @@
             <contributor affiliation="" ref="" annotation="" startTime="" endTime="" timeAnnotation=""/>
             <contributorRole portrayal="" source="" ref="" version="" annotation=""/>
             </pbcoreContributor>-->
-            <xsl:for-each select="fmp:CONTRIBUTOR/fmp:DATA[text() != '']">
-                <xsl:element name="pbcoreContributor">
-                    <xsl:element name="contributor">
-                        <xsl:value-of select="text()"/>
+            <xsl:for-each select="fmp:CONTRIBUTOR/fmp:DATA">
+                <xsl:if test="text() != ''">
+                    <xsl:element name="pbcoreContributor">
+                        <xsl:element name="contributor">
+                            <xsl:value-of select="text()"/>
+                        </xsl:element>
+                        <xsl:element name="contributorRole">
+                            <xsl:if
+                                test="translate(../../fmp:CONTRIBUTOR_ROLE/fmp:DATA[position()]/text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ ,?.:!','abcdefghijklmnopqrstuvwxyz') != 'unknown'">
+                                <xsl:value-of select="../../fmp:CONTRIBUTOR_ROLE/fmp:DATA[position()]/text()"/>
+                            </xsl:if>
+                        </xsl:element>
                     </xsl:element>
-                    <xsl:element name="contributorRole">
-                        <xsl:if test="translate(../../fmp:CONTRIBUTOR_ROLE/fmp:DATA/text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ ,?.:!','abcdefghijklmnopqrstuvwxyz') != 'unknown'">
-                            <xsl:value-of select="../../fmp:CONTRIBUTOR_ROLE/fmp:DATA/text()"/>
-                        </xsl:if>
-                    </xsl:element>
-                </xsl:element><!--</pbcoreContributor>-->
+                </xsl:if>
+                <!--</pbcoreContributor>-->
             </xsl:for-each>
 
             <!--       <pbcorePublisher>

@@ -7,9 +7,9 @@
     exclude-result-prefixes="fmp xsi">
     <xsl:output indent="yes" method="xml"/>
     <xsl:variable name="rowCount" select="count(/fmp:FMPDSORESULT/fmp:ROW)"/>
-    
-    
-<!--     NOTE:  this was written for use with WCVB inventory data in Filemaker database "IMLS_LocalNews_Inventory_final" in NHF folder on dept server in IMLS_News -->
+
+
+    <!--     NOTE:  this was written for use with WCVB inventory data in Filemaker database "IMLS_LocalNews_Inventory_final" in NHF folder on dept server in IMLS_News -->
 
     <xsl:template match="/fmp:FMPDSORESULT">
         <xsl:choose>
@@ -43,17 +43,17 @@
                 </xsl:element>
                 <!--</pbcoreAssetDate>-->
             </xsl:if>
-            
+
             <!--<pbcoreIdentifier source="UID">-->
             <xsl:if test="fmp:UID/text() != ''">
-            <xsl:element name="pbcoreIdentifier">
-                <xsl:attribute name="source">
-                    <xsl:text>UID</xsl:text>
-                </xsl:attribute>
-                <xsl:value-of select="fmp:UID/text()"/>
-            </xsl:element>
+                <xsl:element name="pbcoreIdentifier">
+                    <xsl:attribute name="source">
+                        <xsl:text>UID</xsl:text>
+                    </xsl:attribute>
+                    <xsl:value-of select="fmp:UID/text()"/>
+                </xsl:element>
             </xsl:if>
-            
+
 
             <!--</pbcoreIdentifier>-->
 
@@ -74,19 +74,19 @@
             <!--<pbcoreSubject subjectType="subjectType3" source="source127" ref="ref143"
                 version="version127" annotation="annotation227" startTime="startTime43"
                 endTime="endTime43" timeAnnotation="timeAnnotation43">pbcoreSubject1-->
-            <xsl:if test="fmp:SUBJECT/text() != ''">
+            <xsl:for-each select="fmp:SUBJECT/fmp:DATA[text() != '']">
                 <xsl:element name="pbcoreSubject">
-                    <xsl:value-of select="fmp:SUBJECT/text()"/>
+                    <xsl:value-of select="text()"/>
                 </xsl:element>
-            </xsl:if>
-            <xsl:if test="fmp:SUBJECT_PERSONALITIES/text() != ''">
+            <xsl:for-each select="fmp:SUBJECT_PERSONALITIES/fmp:DATA[text() != '']">
                 <xsl:element name="pbcoreSubject">
                     <xsl:attribute name="subjectType">
                         <xsl:text>entity</xsl:text>
                     </xsl:attribute>
-                    <xsl:value-of select="fmp:SUBJECT_PERSONALITIES/text()"/>
+                    <xsl:value-of select="text()"/>
                 </xsl:element>
-            </xsl:if>
+            </xsl:for-each>
+            </xsl:for-each>
 
             <!--</pbcoreSubject>-->
 
@@ -121,32 +121,36 @@
                     timeAnnotation="timeAnnotation17">coverage0</coverage>
                 <coverageType>Spatial</coverageType>
                 -->
-            <xsl:if test="fmp:LOCATION/text() != ''">
-                <xsl:element name="pbcoreCoverage">
-                    <xsl:element name="coverage">
-                        <xsl:value-of select="fmp:LOCATION/text()"/>
+            <xsl:if test="fmp:LOCATION/fmp:DATA/text() != ''">
+                <xsl:for-each select="fmp:LOCATION/fmp:DATA[text() != '']">
+                    <xsl:element name="pbcoreCoverage">
+                        <xsl:element name="coverage">
+                            <xsl:value-of select="text()"/>
+                        </xsl:element>
+                        <xsl:element name="coverageType">
+                            <xsl:text>spatial</xsl:text>
+                        </xsl:element>
                     </xsl:element>
-                    <xsl:element name="coverageType">
-                        <xsl:text>spatial</xsl:text>
-                    </xsl:element>
-                </xsl:element>
+                </xsl:for-each>
             </xsl:if>
             <!--</pbcoreCoverage>-->
 
             <!--<pbcoreContributor>-->
-            <xsl:if test="concat(fmp:CONTRIBUTOR/text(),fmp:CONTRIBUTOR_ROLE/text()) != ''">
+            <xsl:for-each select="fmp:CONTRIBUTOR/fmp:DATA">
+                <xsl:if test="text() != ''">
                 <xsl:element name="pbcoreContributor">
                     <!--<contributor affiliation="affiliation9" ref="ref161" annotation="annotation251" startTime="startTime57" endTime="endTime57"
                 timeAnnotation="timeAnnotation57">contributor1</contributor>-->
                     <xsl:element name="contributor">
-                        <xsl:value-of select="fmp:CONTRIBUTOR/text()"/>
+                        <xsl:value-of select="text()"/>
                     </xsl:element>
                     <!--<contributorRole portrayal="portrayal3" source="source143" ref="ref163" version="version143" annotation="annotation253">contributorRole1</contributorRole>-->
                     <xsl:element name="contributorRole">
-                        <xsl:value-of select="fmp:CONTRIBUTOR_ROLE/text()"/>
+                        <xsl:value-of select="fmp:CONTRIBUTOR_ROLE/fmp:DATA[position()]/text()"/>
                     </xsl:element>
                 </xsl:element>
-            </xsl:if>
+                </xsl:if>
+            </xsl:for-each>
             <!-- </pbcoreContributor>-->
 
 
@@ -218,7 +222,7 @@
                     <xsl:text>Date Estimated</xsl:text>
                 </xsl:element>
             </xsl:if>
-            
+
             <xsl:if test="fmp:CAN_NUMBER/text() != '' ">
                 <xsl:element name="pbcoreAnnotation">
                     <xsl:attribute name="source">
@@ -227,7 +231,7 @@
                     <xsl:value-of select="fmp:CAN_NUMBER/text()"/>
                 </xsl:element>
             </xsl:if>
-            
+
             <xsl:if test="translate(fmp:Assignment_Sheet/text(),' ','') = '*' ">
                 <xsl:element name="pbcoreAnnotation">
                     <xsl:text>Some type of paper documentation  (ie. content note, cue sheet, film label or other) was in the can and has been removed to the collection folder.</xsl:text>
