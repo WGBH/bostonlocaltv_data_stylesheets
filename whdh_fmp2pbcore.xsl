@@ -41,14 +41,17 @@
                 </xsl:element>
                 <!--</pbcoreAssetType>-->
             </xsl:if>
-            <xsl:element name="pbcoreAssetDate">
-                <!--<pbcoreAssetDate dateType="created">-->
-                <xsl:attribute name="dateType">
-                    <xsl:text>created</xsl:text>
-                </xsl:attribute>
-                <xsl:value-of select="fmp:DATE/text()"/>
-            </xsl:element>
-            <!--</pbcoreAssetDate>-->
+            <xsl:if test="fmp:DATE/text() != ''">
+                <xsl:element name="pbcoreAssetDate">
+                    <!--<pbcoreAssetDate dateType="created">-->
+                    <xsl:attribute name="dateType">
+                        <xsl:text>created</xsl:text>
+                    </xsl:attribute>
+                    <xsl:value-of select="fmp:DATE/text()"/>
+                </xsl:element>
+                <!--</pbcoreAssetDate>-->
+            </xsl:if>
+
             <xsl:element name="pbcoreIdentifier">
                 <!--<pbcoreIdentifier source="UID">-->
                 <xsl:attribute name="source">
@@ -57,20 +60,31 @@
                 <xsl:value-of select="fmp:UID/text()"/>
             </xsl:element>
             <!--</pbcoreIdentifier>-->
-            <xsl:element name="pbcoreIdentifier">
-                <!--<pbcoreIdentifier source="can number">-->
-                <xsl:attribute name="source">
-                    <xsl:text>can number</xsl:text>
-                </xsl:attribute>
-                <xsl:value-of select="fmp:CAN_NUMBER/text()"/>
-            </xsl:element>
-            <!--</pbcoreIdentifier>-->
+            <xsl:if test="fmp:CAN_NUMBER/text() != ''">
+                <xsl:element name="pbcoreIdentifier">
+                    <!--<pbcoreIdentifier source="can number">-->
+                    <xsl:attribute name="source">
+                        <xsl:text>can number</xsl:text>
+                    </xsl:attribute>
+                    <xsl:value-of select="fmp:CAN_NUMBER/text()"/>
+                </xsl:element>
+            </xsl:if>
+            <xsl:if test="fmp:Digital_Filename/text() != ''">
+                <xsl:element name="pbcoreIdentifier">
+                    <xsl:attribute name="source">
+                        <xsl:text>Digital_Filename</xsl:text>
+                    </xsl:attribute>
+                    <xsl:value-of select="fmp:Digital_Filename/text()"/>
+                </xsl:element>
+            </xsl:if>
             <!-- 2 IDENTIFIERS? -->
-            <xsl:element name="pbcoreTitle">
-                <!--<pbcoreTitle>-->
-                <xsl:value-of select="fmp:TITLE/text()"/>
-            </xsl:element>
-            <!--</pbcoreTitle>-->
+            <xsl:if test="fmp:TITLE/text() != ''">
+                <xsl:element name="pbcoreTitle">
+                    <!--<pbcoreTitle>-->
+                    <xsl:value-of select="fmp:TITLE/text()"/>
+                </xsl:element>
+                <!--</pbcoreTitle>-->
+            </xsl:if>
 
             <!--        <pbcoreSubject subjectType="" source="" ref="" version="" annotation="" startTime="" endTime="" timeAnnotation=""/>-->
             <xsl:for-each select="fmp:SUBJECT/fmp:DATA[text() != '']">
@@ -142,23 +156,33 @@
 
 
 
-            <xsl:for-each select="fmp:CONTRIBUTOR/fmp:DATA">
-                <xsl:if test="text() != ''">
-                    <xsl:element name="pbcoreContributor">
-                        <xsl:element name="contributor">
-                            <xsl:value-of select="text()"/>
-                        </xsl:element>
-                        <xsl:element name="contributorRole">
-                            <xsl:if
-                                test="translate(../../fmp:CONTRIBUTOR_ROLE/fmp:DATA[position()]/text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ ,?.:!','abcdefghijklmnopqrstuvwxyz') != 'unknown'">
-                                <xsl:value-of select="../../fmp:CONTRIBUTOR_ROLE/fmp:DATA[position()]/text()"/>
-                            </xsl:if>
-                        </xsl:element>
+            <xsl:for-each select="fmp:CONTRIBUTOR/fmp:DATA[text() != '']">
+                <xsl:element name="pbcoreContributor">
+                    <xsl:element name="contributor">
+                        <xsl:value-of select="text()"/>
                     </xsl:element>
-                </xsl:if>
+                    <xsl:element name="contributorRole">
+                        <xsl:if
+                            test="translate(../../fmp:CONTRIBUTOR_ROLE/fmp:DATA/text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ ,?.:!','abcdefghijklmnopqrstuvwxyz') != 'unknown'">
+                            <xsl:value-of select="../../fmp:CONTRIBUTOR_ROLE/fmp:DATA/text()"/>
+                        </xsl:if>
+                    </xsl:element>
+                </xsl:element>
                 <!--</pbcoreContributor>-->
             </xsl:for-each>
-
+            
+            <xsl:if test="fmp:Credit/text() != ''">
+                <xsl:element name="pbcorePublisher">
+                    <xsl:element name="publisher">
+                        <xsl:value-of select="fmp:Credit/text()"/>
+                    </xsl:element>
+                    <xsl:element name="publisherRole">
+                        <xsl:value-of select="'Publisher'"/>
+                    </xsl:element>
+                </xsl:element>
+                <!--</pbcorePublisher>-->
+            </xsl:if>
+            
 
 
             <xsl:element name="pbcoreInstantiation">
@@ -179,22 +203,28 @@
                 <!--</instantiationIdentifier>-->
 
                 <!--<instantiationDimensions unitsOfMeasure="xF4cJeX0No2VodcAL" annotation="J8GYMlEuYWWu">fX.</instantiationDimensions>-->
-                <xsl:element name="instantiationDimensions">
-                    <!--<instantiationDimensions/>-->
-                    <xsl:attribute name="unitsOfMeasure">
-                        <xsl:text>feet</xsl:text>
-                    </xsl:attribute>
-                    <xsl:value-of select="fmp:FOOTAGE_LENGTH/text()"/>
-                </xsl:element>
+                <xsl:if test="fmp:FOOTAGE_LENGTH/text() != ''">
+                    <xsl:element name="instantiationDimensions">
+                        <!--<instantiationDimensions/>-->
+                        <xsl:attribute name="unitsOfMeasure">
+                            <xsl:text>feet</xsl:text>
+                        </xsl:attribute>
+                        <xsl:value-of select="fmp:FOOTAGE_LENGTH/text()"/>
+                    </xsl:element>
+                    <!--</instantiationDimensions>-->
+                </xsl:if>
                 <!--</instantiationDimensions>-->
-                <xsl:element name="instantiationPhysical">
-                    <!--<instantiationPhysical>-->
-                    <!--<xsl:attribute name="annotation">
-                        <xsl:text>not in DB, but added to records during conversion to PBCore</xsl:text>
-                    </xsl:attribute>
-                    <xsl:text>Film: 16mm</xsl:text>-->
-                    <xsl:value-of select="fmp:FORMAT_ITEM/text()"/>
-                </xsl:element>
+                <xsl:if test="fmp:FORMAT_ITEM/text() != ''">
+                    <xsl:element name="instantiationPhysical">
+                        <!--<instantiationPhysical>-->
+                        <!--<xsl:attribute name="annotation">
+                            <xsl:text>not in DB, but added to records during conversion to PBCore</xsl:text>
+                            </xsl:attribute>
+                            <xsl:text>Film: 16mm</xsl:text>-->
+                        <xsl:value-of select="fmp:FORMAT_ITEM/text()"/>
+                    </xsl:element>
+                    <!--</instantiationPhysical>-->
+                </xsl:if>
                 <!--</instantiationPhysical>-->
                 <!--<instantiationMediaType source="cgJsuv" ref="ri-8coaqhn1K_R7pHGLO8KB" version="OvBY1WRpQi9foZpCvf" annotation="FxuJMXBz4ygyv3N8MqkUIcTjG535QH">a</instantiationMediaType>-->
                 <!--<xsl:if test="fmp:AUDIO_TYPE/text() != ''">

@@ -48,9 +48,25 @@
             <xsl:if test="fmp:UID/text() != ''">
                 <xsl:element name="pbcoreIdentifier">
                     <xsl:attribute name="source">
-                        <xsl:text>UID</xsl:text>
+                        <xsl:text>Accession #</xsl:text>
                     </xsl:attribute>
                     <xsl:value-of select="fmp:UID/text()"/>
+                </xsl:element>
+            </xsl:if>
+
+            <xsl:if test="fmp:Assignment_Sheet_ID/text() != ''">
+                <xsl:element name="pbcoreIdentifier">
+                    <!--<pbcoreIdentifier source="UID">-->
+                    <xsl:value-of select="fmp:Assignment_Sheet_ID/text()"/>
+                </xsl:element>
+            </xsl:if>
+
+            <xsl:if test="fmp:Digital_Filename/text() != ''">
+                <xsl:element name="pbcoreIdentifier">
+                    <xsl:attribute name="source">
+                        <xsl:text>Digital_Filename</xsl:text>
+                    </xsl:attribute>
+                    <xsl:value-of select="fmp:Digital_Filename/text()"/>
                 </xsl:element>
             </xsl:if>
 
@@ -78,6 +94,7 @@
                 <xsl:element name="pbcoreSubject">
                     <xsl:value-of select="text()"/>
                 </xsl:element>
+            </xsl:for-each>
             <xsl:for-each select="fmp:SUBJECT_PERSONALITIES/fmp:DATA[text() != '']">
                 <xsl:element name="pbcoreSubject">
                     <xsl:attribute name="subjectType">
@@ -85,7 +102,6 @@
                     </xsl:attribute>
                     <xsl:value-of select="text()"/>
                 </xsl:element>
-            </xsl:for-each>
             </xsl:for-each>
 
             <!--</pbcoreSubject>-->
@@ -121,37 +137,50 @@
                     timeAnnotation="timeAnnotation17">coverage0</coverage>
                 <coverageType>Spatial</coverageType>
                 -->
-            <xsl:if test="fmp:LOCATION/fmp:DATA/text() != ''">
-                <xsl:for-each select="fmp:LOCATION/fmp:DATA[text() != '']">
-                    <xsl:element name="pbcoreCoverage">
-                        <xsl:element name="coverage">
-                            <xsl:value-of select="text()"/>
-                        </xsl:element>
-                        <xsl:element name="coverageType">
-                            <xsl:text>spatial</xsl:text>
-                        </xsl:element>
+
+            <xsl:for-each select="fmp:LOCATION/fmp:DATA[text() != '']">
+                <xsl:element name="pbcoreCoverage">
+                    <xsl:element name="coverage">
+                        <xsl:value-of select="text()"/>
                     </xsl:element>
-                </xsl:for-each>
-            </xsl:if>
+                    <xsl:element name="coverageType">
+                        <xsl:text>spatial</xsl:text>
+                    </xsl:element>
+                </xsl:element>
+            </xsl:for-each>
+
             <!--</pbcoreCoverage>-->
 
             <!--<pbcoreContributor>-->
             <xsl:for-each select="fmp:CONTRIBUTOR/fmp:DATA">
                 <xsl:if test="text() != ''">
-                <xsl:element name="pbcoreContributor">
-                    <!--<contributor affiliation="affiliation9" ref="ref161" annotation="annotation251" startTime="startTime57" endTime="endTime57"
+                    <xsl:element name="pbcoreContributor">
+                        <!--<contributor affiliation="affiliation9" ref="ref161" annotation="annotation251" startTime="startTime57" endTime="endTime57"
                 timeAnnotation="timeAnnotation57">contributor1</contributor>-->
-                    <xsl:element name="contributor">
-                        <xsl:value-of select="text()"/>
+                        <xsl:element name="contributor">
+                            <xsl:value-of select="text()"/>
+                        </xsl:element>
+                        <!--<contributorRole portrayal="portrayal3" source="source143" ref="ref163" version="version143" annotation="annotation253">contributorRole1</contributorRole>-->
+                        <xsl:element name="contributorRole">
+                            <xsl:value-of select="fmp:CONTRIBUTOR_ROLE/fmp:DATA[position()]/text()"
+                            />
+                        </xsl:element>
                     </xsl:element>
-                    <!--<contributorRole portrayal="portrayal3" source="source143" ref="ref163" version="version143" annotation="annotation253">contributorRole1</contributorRole>-->
-                    <xsl:element name="contributorRole">
-                        <xsl:value-of select="fmp:CONTRIBUTOR_ROLE/fmp:DATA[position()]/text()"/>
-                    </xsl:element>
-                </xsl:element>
                 </xsl:if>
             </xsl:for-each>
             <!-- </pbcoreContributor>-->
+            
+            <xsl:for-each select="fmp:Credit/fmp:DATA[text() != '']">
+                <xsl:element name="pbcorePublisher">
+                    <xsl:element name="publisher">
+                        <xsl:value-of select="text()"/>
+                    </xsl:element>
+                    <xsl:element name="publisherRole">
+                        <xsl:value-of select="'Publisher'"/>
+                    </xsl:element>
+                </xsl:element>
+                <!--</pbcorePublisher>-->
+            </xsl:for-each>
 
 
             <xsl:element name="pbcoreInstantiation">
@@ -196,10 +225,33 @@
 
                 <!--<instantiationMediaType source="cgJsuv" ref="ri-8coaqhn1K_R7pHGLO8KB" version="OvBY1WRpQi9foZpCvf" annotation="FxuJMXBz4ygyv3N8MqkUIcTjG535QH">a</instantiationMediaType>-->
                 <!--</instantiationMediaType>-->
+                
+                <xsl:if test="fmp:Format_Duration/text() !=''">
+                    <xsl:element name="instantiationDuration">
+                        <!--<instantiationDuration>-->
+                        <!--<xsl:value-of select="fmp:time_total_running/text()"/>-->
+                        <xsl:value-of select="fmp:Format_Duration/text()"/>
+                    </xsl:element>
+                    <!--</instantiationDuration>-->
+                </xsl:if>
 
 
                 <!--<instantiationColors source="Y1J" ref="cRZAENTL" version="iDNU6RY6mk0wERVFZW1" annotation="fAptW2">MfKdnIGJB3JCtM_SEjU</instantiationColors>-->
                 <!--</instantiationColors>-->
+                
+                <xsl:if test="fmp:Format_Color/text() != ''">
+                    <xsl:element name="instantiationColors">
+                        <xsl:value-of select="fmp:Format_Colors/text()"/>
+                    </xsl:element>
+                    <!--</instantiationColors>-->
+                </xsl:if>
+                
+                <xsl:if test="fmp:Audio_Type/text() != ''">
+                    <xsl:element name="instantiationTracks">
+                        <xsl:value-of select="fmp:Audio_Type/text()"/>
+                    </xsl:element>
+                    <!--</instantiationTracks>-->
+                </xsl:if>
 
 
 
@@ -248,30 +300,36 @@
                     <extensionValue>Jwn3LUDcuq</extensionValue>
                     <extensionAuthorityUsed>http://PgTjZMrF/</extensionAuthorityUsed>
                     </extensionWrap>-->
-            <xsl:element name="pbcoreExtension">
-                <xsl:element name="extensionWrap">
-                    <xsl:attribute name="annotation">
-                        <xsl:text>original database metadata</xsl:text>
-                    </xsl:attribute>
-                    <xsl:element name="extensionElement">
-                        <xsl:text>DATE_CREATED</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="extensionValue">
-                        <xsl:value-of select="fmp:DATE_CREATED/text()"/>
-                    </xsl:element>
+            <xsl:if test="concat(fmp:DATE_CREATED/text(),fmp:DATE_MODIFIED/text()) != ''">
+                <xsl:element name="pbcoreExtension">
+                    <xsl:if test="fmp:DATE_CREATED/text() != ''">
+                        <xsl:element name="extensionWrap">
+                            <xsl:attribute name="annotation">
+                                <xsl:text>original database metadata</xsl:text>
+                            </xsl:attribute>
+                            <xsl:element name="extensionElement">
+                                <xsl:text>DATE_CREATED</xsl:text>
+                            </xsl:element>
+                            <xsl:element name="extensionValue">
+                                <xsl:value-of select="fmp:DATE_CREATED/text()"/>
+                            </xsl:element>
+                        </xsl:element>
+                    </xsl:if>
+                    <xsl:if test="fmp:DATE_MODIFIED/text() != ''">
+                        <xsl:element name="extensionWrap">
+                            <xsl:attribute name="annotation">
+                                <xsl:text>original database metadata</xsl:text>
+                            </xsl:attribute>
+                            <xsl:element name="extensionElement">
+                                <xsl:text>DATE_MODIFIED</xsl:text>
+                            </xsl:element>
+                            <xsl:element name="extensionValue">
+                                <xsl:value-of select="fmp:DATE_MODIFIED/text()"/>
+                            </xsl:element>
+                        </xsl:element>
+                    </xsl:if>
                 </xsl:element>
-                <xsl:element name="extensionWrap">
-                    <xsl:attribute name="annotation">
-                        <xsl:text>original database metadata</xsl:text>
-                    </xsl:attribute>
-                    <xsl:element name="extensionElement">
-                        <xsl:text>DATE_MODIFIED</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="extensionValue">
-                        <xsl:value-of select="fmp:DATE_MODIFIED/text()"/>
-                    </xsl:element>
-                </xsl:element>
-            </xsl:element>
+            </xsl:if>
 
 
         </xsl:element>
