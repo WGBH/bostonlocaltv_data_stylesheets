@@ -103,6 +103,16 @@
                 </xsl:attribute>
                 <xsl:value-of select="fmp:id_program_prime/text()"/>
             </xsl:element>
+            <xsl:if test="fmp:Digital_Filename/text() != ''">
+                <xsl:element name="pbcoreIdentifier">
+                    <!--<pbcoreIdentifier source="UID">-->
+                    <xsl:attribute name="source">
+                        <xsl:text>Digital_Filename</xsl:text>
+                    </xsl:attribute>
+                    <xsl:value-of select="fmp:Digital_Filename/text()"/>
+                </xsl:element>
+                <!--</pbcoreIdentifier>-->
+            </xsl:if>
             <!--</pbcoreIdentifier>-->
             <!-- 2 IDENTIFIERS? -->
             <xsl:if test="fmp:tx_ProgramTitle/text() != ''">
