@@ -227,16 +227,18 @@
                     <!--removes all whitespace for test-->
                     <xsl:element name="pbcoreContributor">
                         <!--<pbcoreContributor>-->
-                        <xsl:value-of select="text()"/>
-                    </xsl:element>
+                        <xsl:element name="contributor">
+							<xsl:value-of select="text()"/>
+						</xsl:element>
                     <!--</pbcoreContributor>-->
-                    <xsl:element name="contributorRole">
-                        <xsl:if
-                            test="translate(../../fmp:CONTRIBUTOR_ROLE/fmp:DATA[$posNum]/text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ ,.:!?','abcdefghijklmnopqrstuvwxyz') != 'unknown'">
-                            <xsl:value-of
-                                select="../../fmp:CONTRIBUTOR_ROLE/fmp:DATA[$posNum]/text()"/>
-                        </xsl:if>
-                    </xsl:element>
+						<xsl:element name="contributorRole">
+							<xsl:if
+								test="translate(../../fmp:CONTRIBUTOR_ROLE/fmp:DATA[$posNum]/text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ ,.:!?','abcdefghijklmnopqrstuvwxyz') != 'unknown'">
+								<xsl:value-of
+									select="../../fmp:CONTRIBUTOR_ROLE/fmp:DATA[$posNum]/text()"/>
+							</xsl:if>
+						</xsl:element>
+					</xsl:element>
                 </xsl:if>
             </xsl:for-each>
 
