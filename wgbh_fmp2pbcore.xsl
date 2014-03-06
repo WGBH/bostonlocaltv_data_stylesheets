@@ -122,6 +122,12 @@
             <xsl:element name="pbcoreDescription">
                 <xsl:value-of select="fmp:DESCRIPTION/text()"/>
             </xsl:element>
+            <xsl:element name="pbcoreDescription">
+            	<xsl:attribute name="descriptionType">
+            		<xsl:text>shot log</xsl:text>
+				</xsl:attribute>
+                <xsl:value-of select="fmp:shot_log/text()"/>
+            </xsl:element>
             
             <!--</pbcoreDescription>-->
 
